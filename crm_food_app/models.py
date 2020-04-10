@@ -140,7 +140,7 @@ class MealOrder(models.Model):
     #     return self.count
 
 
-class Check(models.Model):
+class CheckOrder(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     servicefree = models.IntegerField(default=20)
@@ -159,7 +159,7 @@ class CheckedMeal(models.Model):
     mealorder = models.ForeignKey(
         MealOrder, on_delete=models.CASCADE, default=True, null=False)
     check_fk = models.ForeignKey(
-        Check, related_name='check', on_delete=models.CASCADE, default=True, null=False
+        CheckOrder, related_name='checks', on_delete=models.CASCADE, default=True, null=False
     )
     meal = models.ForeignKey(
         Meal, on_delete=models.CASCADE, default=True, null=False)
