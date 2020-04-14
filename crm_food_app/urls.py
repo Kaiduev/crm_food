@@ -8,4 +8,6 @@ urlpatterns = [
     path('roles/<int:pk>/', RoleDetail.as_view()),
     path('departments/', DepartmentView.as_view()),
     path('departments/<int:pk>/', DepartmentDetail.as_view()),
+    path('users/', UserView.as_view()),
+    path('users/<int:pk>/', UserDetail.as_view()),
 ]

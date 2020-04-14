@@ -8,7 +8,7 @@ class RoleSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
     def create(self, validated_data):
-        return Table.objects.create(**validated_data)
+        return Role.objects.create(**validated_data)
 
 
 class UserSerializer(serializers.ModelSerializer):

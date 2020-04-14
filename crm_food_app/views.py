@@ -55,9 +55,9 @@ class RoleView(APIView):
     def get(self, request):
         roles = Role.objects.all()
         serializer = serializers.RoleSerializer(roles, many=True)
-        return Response({"tables": serializer.data})
+        return Response({"roles": serializer.data})
 
-    def post(self,request):
+    def post(self, request):
         serializer = serializers.RoleSerializer(data=request.data)
         if serializer.is_valid():
             saved_data = serializer.save()
@@ -133,4 +133,48 @@ class DepartmentDetail(APIView):
         Resp = Department.objects.get(pk=pk)
         department.delete()
         return Response({"success": "Department '{}' was deleted".format(Resp.name)},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserView(APIView):
+
+    serializer_class = serializers.UserSerializer
+
+    def get(self, request):
+        users = User.objects.all()
+        serializer = serializers.UserSerializer(users, many=True)
+        return Response({"users": serializer.data})
+
+    def post(self, request):
+        serializer = serializers.UserSerializer(data=request.data)
+        if serializer.is_valid():
+            saved_data = serializer.save()
+            return Response({"success":"User '{}' was created successfully".format(saved_data.name)})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserDetail(APIView):
+
+    serializer_class = serializers.UserSerializer
+
+    def get(self, request, pk):
+        user = User.objects.get(pk=pk)
+        serializer = serializers.UserSerializer(user)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        user = User.objects.get(pk=pk)
+        serializer = serializers.UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self,request,pk):
+        user = User.objects.get(pk=pk)
+        Resp = User.objects.get(pk=pk)
+        user.delete()
+        return Response({"success": "User '{}' was deleted".format(Resp.name)},
                         status=status.HTTP_400_BAD_REQUEST)
