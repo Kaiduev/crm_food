@@ -10,4 +10,6 @@ urlpatterns = [
     path('departments/<int:pk>/', DepartmentDetail.as_view()),
     path('users/', UserView.as_view()),
     path('users/<int:pk>/', UserDetail.as_view()),
+    path('meal/categories/', MealCategoryView.as_view()),
+    path('meal/categories/<int:pk>/', MealCategoryDetail.as_view())
 ]
