@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from . import serializers
 from .models import *
@@ -88,5 +88,49 @@ class RoleDetail(APIView):
         Resp = Role.objects.get(pk=pk)
         role = Role.objects.get(pk=pk)
         role.delete()
-        return Response({"success":"Role '{}' was deleted".format(Resp.name)},
+        return Response({"success": "Role '{}' was deleted".format(Resp.name)},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+
+class DepartmentView(APIView):
+
+    serializer_class = serializers.DepartmentSerializer
+
+    def get(self,request):
+        departments = Department.objects.all()
+        serializer = serializers.DepartmentSerializer(departments, many=True)
+        return Response({"departments":serializer.data})
+
+    def post(self, request):
+        serializer = serializers.DepartmentSerializer(data=request.data)
+        if serializer.is_valid():
+            saved_data = serializer.save()
+            return Response({"success": "Department '{}' created successfully".format(saved_data.name)})
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+
+class DepartmentDetail(APIView):
+
+    serializer_class = serializers.DepartmentSerializer
+
+    def get(self, request, pk):
+        department = Department.objects.get(pk=pk)
+        serializer = serializers.DepartmentSerializer(department)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        department = Department.objects.get(pk=pk)
+        serializer = serializers.DepartmentSerializer(department, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, pk):
+        department = Department.objects.get(pk=pk)
+        Resp = Department.objects.get(pk=pk)
+        department.delete()
+        return Response({"success": "Department '{}' was deleted".format(Resp.name)},
                         status=status.HTTP_400_BAD_REQUEST)
