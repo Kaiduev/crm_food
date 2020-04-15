@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from . import serializers
@@ -222,3 +221,48 @@ class MealCategoryDetail(APIView):
         user.delete()
         return Response({"success": "MealCategory '{}' was deleted".format(Resp.name)},
                         status=status.HTTP_400_BAD_REQUEST)
+
+
+class StatusView(APIView):
+
+    serializer_class = serializers.StatusSerializer
+
+    def get(self, request):
+        statuses = Status.objects.all()
+        serializer = serializers.StatusSerializer(statuses, many=True)
+        return Response({"statuses": serializer.data})
+
+    def post(self, request):
+        serializer = serializers.StatusSerializer(data=request.data)
+        if serializer.is_valid():
+            saved_data = serializer.save()
+            return Response({"success": "Status '{}' was created successfully".format(saved_data.name)})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class StatusDetail(APIView):
+
+    serializer_class = serializers.StatusSerializer
+
+    def get(self, request, pk):
+        status_ = Status.objects.get(pk=pk)
+        serializer = serializers.StatusSerializer(status_)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        status_ = Status.objects.get(pk=pk)
+        serializer = serializers.StatusSerializer(status_, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self,request,pk):
+        Resp = Status.objects.get(pk=pk)
+        status_ = Status.objects.get(pk=pk)
+        status_.delete()
+        return Response({"success": "Status '{}' was deleted".format(Resp.name)},
+                        status=status.HTTP_400_BAD_REQUEST)
+

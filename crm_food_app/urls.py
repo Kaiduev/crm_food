@@ -11,5 +11,7 @@ urlpatterns = [
     path('users/', UserView.as_view()),
     path('users/<int:pk>/', UserDetail.as_view()),
     path('meal/categories/', MealCategoryView.as_view()),
-    path('meal/categories/<int:pk>/', MealCategoryDetail.as_view())
+    path('meal/categories/<int:pk>/', MealCategoryDetail.as_view()),
+    path('statuses/', StatusView.as_view()),
+    path('statuses/<int:pk>', StatusDetail.as_view()),
 ]
