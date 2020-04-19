@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from . import serializers
 from .models import *
 from rest_framework.response import Response
+from rest_framework import generics
 
 
 class TableView(APIView):
@@ -296,7 +297,7 @@ class MealDetail(APIView):
 
     def put(self, request, pk):
         meal = Meal.objects.get(pk=pk)
-        serializer = serializers.MealSerializer(data=request.data)
+        serializer = serializers.MealSerializer(meal,data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -309,3 +310,11 @@ class MealDetail(APIView):
         meal.delete()
         return Response({"success": "Meal '{}' was deleted successfully".format(Resp.name)})
 
+
+class MealsByCategory(generics.ListAPIView):
+
+    serializer_class = serializers.MealSerializer
+
+    def get_queryset(self):
+        category = self.request.category
+        return Meal.objects.filter(category=category)

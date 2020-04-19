@@ -58,6 +58,7 @@ class MealCategorySerializer(serializers.ModelSerializer):
 
 
 class MealSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Meal
         fields = ['id', 'name', 'category',

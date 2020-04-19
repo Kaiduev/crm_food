@@ -1,3 +1,4 @@
+from django.conf.urls import url
 from django.urls import path
 from .views import *
 
@@ -16,4 +17,5 @@ urlpatterns = [
     path('statuses/<int:pk>', StatusDetail.as_view()),
     path('meals/', MealView.as_view()),
     path('meals/<int:pk>/',MealDetail().as_view()),
+    path('mealsbycategory/', MealsByCategory.as_view()),
 ]
