@@ -266,3 +266,46 @@ class StatusDetail(APIView):
         return Response({"success": "Status '{}' was deleted".format(Resp.name)},
                         status=status.HTTP_400_BAD_REQUEST)
 
+
+class MealView(APIView):
+
+    serializer_class = serializers.MealSerializer
+
+    def get(self, request):
+        meals = Meal.objects.all()
+        serializer = serializers.MealSerializer(meals, many=True)
+        return Response({"meals": serializer.data})
+
+    def post(self,request):
+        serializer = serializers.MealSerializer(data=request.data)
+        if serializer.is_valid():
+            saved_data = serializer.save()
+            return Response({"success": "Meal '{}' was created successfully".format(saved_data.name)})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MealDetail(APIView):
+
+    serializer_class = serializers.MealSerializer
+
+    def get(self, request,pk):
+        meal = Meal.objects.get(pk=pk)
+        serializer = serializers.MealSerializer(meal)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        meal = Meal.objects.get(pk=pk)
+        serializer = serializers.MealSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        meal = Meal.objects.get(pk=pk)
+        Resp = Meal.objects.get(pk=pk)
+        meal.delete()
+        return Response({"success": "Meal '{}' was deleted successfully".format(Resp.name)})
+
