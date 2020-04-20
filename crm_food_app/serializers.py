@@ -68,7 +68,7 @@ class MealSerializer(serializers.ModelSerializer):
         return Meal.objects.create(**validated_data)
 
 
-class OrderSerialize(serializers.ModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id', 'waiter', 'table',

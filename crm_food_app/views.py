@@ -1,9 +1,11 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from . import serializers
 from .models import *
 from rest_framework.response import Response
 from rest_framework import generics
+import django_filters.rest_framework
 
 
 class TableView(APIView):
@@ -287,7 +289,7 @@ class MealView(APIView):
 
 
 class MealDetail(APIView):
-
+    """Meal Detail"""
     serializer_class = serializers.MealSerializer
 
     def get(self, request,pk):
@@ -313,8 +315,14 @@ class MealDetail(APIView):
 
 class MealsByCategory(generics.ListAPIView):
 
+    queryset = Meal.objects.all()
     serializer_class = serializers.MealSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category']
 
-    def get_queryset(self):
-        category = self.request.category
-        return Meal.objects.filter(category=category)
+
+class OrderView(APIView):
+
+    # serializer_class = serializers.OrderSerializer
+    #
+    # def get(self, request):
