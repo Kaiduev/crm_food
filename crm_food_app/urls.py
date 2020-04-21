@@ -14,8 +14,11 @@ urlpatterns = [
     path('meal/categories/', MealCategoryView.as_view()),
     path('meal/categories/<int:pk>/', MealCategoryDetail.as_view()),
     path('statuses/', StatusView.as_view()),
-    path('statuses/<int:pk>', StatusDetail.as_view()),
+    path('statuses/<int:pk>/', StatusDetail.as_view()),
     path('meals/', MealView.as_view()),
     path('meals/<int:pk>/',MealDetail().as_view()),
     path('mealsbycategory/', MealsByCategory.as_view()),
+    path('orders/', OrderView.as_view()),
+    path('orders/<int:pk>/', OrderDetail.as_view()),
+    path('orders/active/', ActiveOrders.as_view()),
 ]

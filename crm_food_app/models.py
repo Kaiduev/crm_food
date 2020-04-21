@@ -6,7 +6,7 @@ from django.db import models
 
 
 class Role(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
 
     class Meta:
         ordering = ['name']
@@ -47,7 +47,7 @@ class Status(models.Model):
 
 
 class Table(models.Model):
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, unique=True)
 
     class Meta:
         ordering = ['name']
@@ -57,7 +57,7 @@ class Table(models.Model):
 
 
 class Department(models.Model):
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, unique=True)
 
     class Meta:
         ordering = ['name']
@@ -102,10 +102,25 @@ class Order(models.Model):
         ordering = ['waiter']
 
     def __str__(self):
-        return self.table
-
-    def table_name(self):
         return self.table.name
+
+    # def table_name(self):
+    #     return self.table.name
+
+
+class MealOrder(models.Model):
+    order = models.ForeignKey(Order, verbose_name='order', on_delete=models.CASCADE, related_name='meals')
+    meal = models.ForeignKey(Meal, on_delete=models.CASCADE, default=True, null=False)
+    count = models.IntegerField()
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return self.meal.name
+
+    def count_(self):
+        return self.count
 
 
 class MealsToOrder(models.Model):
@@ -118,26 +133,6 @@ class MealsToOrder(models.Model):
     def __str__(self):
         return self.order
 
-
-class MealOrder(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='meal',
-                              default=True, null=False)
-    mealstooerder = models.ForeignKey(
-        MealsToOrder, on_delete=models.CASCADE, default=True, null=False)
-    meal = models.ForeignKey(Meal, on_delete=models.CASCADE, default=True, null=False)
-    count = models.IntegerField()
-
-    class Meta:
-        ordering = ['order']
-
-    def __str__(self):
-        return self.meal
-
-    # def name(self):
-    #     return self.meal.name
-    #
-    # def count_(self):
-    #     return self.count
 
 
 class CheckOrder(models.Model):

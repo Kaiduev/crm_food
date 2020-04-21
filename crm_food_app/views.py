@@ -322,7 +322,43 @@ class MealsByCategory(generics.ListAPIView):
 
 
 class OrderView(APIView):
+    """OrderList"""
 
-    # serializer_class = serializers.OrderSerializer
-    #
-    # def get(self, request):
+    serializer_class = serializers.OrderSerializer
+
+    def get(self, request):
+        orders = Order.objects.all()
+        serializer = serializers.OrderSerializer(orders, many=True)
+        return Response({"orders":serializer.data})
+
+    def post(self, request):
+        serializer = serializers.OrderSerializer(data=request.data)
+        if serializer.is_valid():
+            saved_data = serializer.save()
+            return Response({'success': "Order '{}' was created successfully".format(saved_data.table)})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ActiveOrders(generics.ListAPIView):
+
+    queryset = Order.objects.all()
+    serializer_class = serializers.OrderSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['isitopen']
+
+
+class OrderDetail(APIView):
+
+    serializer = serializers.OrderSerializer
+
+    def get(self, request, pk):
+        order = Order.objects.get(pk=pk)
+        serializer = serializers.OrderSerializer(order)
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        order = Order.objects.get(pk=pk)
+        Resp = Order.objects.get(pk=pk)
+        order.delete()
+        return Response({"success":"Order '{}' was deleted successfully".format(Resp.table.name)})

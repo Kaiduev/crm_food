@@ -68,16 +68,6 @@ class MealSerializer(serializers.ModelSerializer):
         return Meal.objects.create(**validated_data)
 
 
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = ['id', 'waiter', 'table',
-                  'isitopen', 'date']
-
-    def create(self, validated_data):
-        return Order.objects.create(**validated_data)
-
-
 class MealsToOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model= MealsToOrder
@@ -88,12 +78,27 @@ class MealsToOrderSerializer(serializers.ModelSerializer):
 
 
 class MealOrderSerializer(serializers.ModelSerializer):
+
+    meal = serializers.SlugRelatedField(slug_field="name", read_only=True)
+
     class Meta:
         model = MealOrder
-        fields = ['id', 'mealstoorder', 'meal', 'count']
+        fields = ['id', 'order', 'meal', 'count']
 
     def create(self, validated_data):
         return MealOrder.objects.create(**validated_data)
+
+
+class OrderSerializer(serializers.ModelSerializer):
+
+    meals = MealOrderSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = ['id', 'isitopen', 'waiter','date', 'table', 'meals']
+
+    def create(self, validated_data):
+        return Order.objects.create(**validated_data)
 
 
 class CheckOrderSerializer(serializers.ModelSerializer):
