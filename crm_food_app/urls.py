@@ -21,4 +21,5 @@ urlpatterns = [
     path('orders/', OrderView.as_view()),
     path('orders/<int:pk>/', OrderDetail.as_view()),
     path('orders/active/', ActiveOrders.as_view()),
+    path('checks/', CheckView.as_view()),
 ]

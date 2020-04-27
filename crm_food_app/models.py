@@ -134,8 +134,8 @@ class MealsToOrder(models.Model):
         return self.order
 
 
-
 class CheckOrder(models.Model):
+    ordername = models.CharField(max_length=150, default=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     servicefree = models.IntegerField(default=20)
@@ -144,35 +144,36 @@ class CheckOrder(models.Model):
         ordering = ['order']
 
     def __str__(self):
-        return self.order
+        return self.ordername
 
-    # def total_sum(self):
-    #     return sum(item.total() for item in CheckedMeal.objects.filter(check_fk=self.id)) + self.servicefee
+    def total_sum(self):
+        return sum(item.total() for item in CheckedMeal.objects.filter(check_fk=self.id)) + self.servicefee
 
 
 class CheckedMeal(models.Model):
+    title = models.CharField(max_length=150, default='')
     mealorder = models.ForeignKey(
-        MealOrder, on_delete=models.CASCADE, default=True, null=False)
+        MealOrder, on_delete=models.CASCADE, default=True, null=False, related_name='meals')
     check_fk = models.ForeignKey(
-        CheckOrder, related_name='checks', on_delete=models.CASCADE, default=True, null=False
+        CheckOrder, verbose_name='checkfk', on_delete=models.CASCADE, related_name='check_fk'
     )
     meal = models.ForeignKey(
         Meal, on_delete=models.CASCADE, default=True, null=False)
 
     def __str__(self):
-        return self.mealorder
+        return self.title
 
-    # def name(self):
-    #     return self.meal.name
-    #
-    # def amount(self):
-    #     meal_id = self.meal
-    #     return sum(item.get_count() for item in MealOrder.objects.filter(meal=meal_id))
-    #
-    # def price(self):
-    #     return self.meal.price
-    #
-    # def total(self):
-    #     price = self.price()
-    #     amount = self.amount()
-    #     return price * amount
+    def name(self):
+        return self.meal.name
+
+    def amount(self):
+        meal_id = self.meal
+        return sum(item.get_count() for item in MealOrder.objects.filter(meal=meal_id))
+
+    def price(self):
+        return self.meal.price
+
+    def total(self):
+        price = self.price()
+        amount = self.amount()
+        return price * amount

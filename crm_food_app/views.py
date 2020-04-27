@@ -21,7 +21,8 @@ class TableView(APIView):
         serializer = serializers.TableSerializer(data=request.data)
         if serializer.is_valid():
             saved_data = serializer.save()
-            return Response({"success": "Table '{}' created successfully".format(saved_data.name)})
+            return Response({"success": "Table '{}' created successfully".format(saved_data.name)},
+                            status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -33,7 +34,7 @@ class TableDetail(APIView):
     def get(self, request, pk):
         table = Table.objects.get(pk=pk)
         serializer = serializers.TableSerializer(table)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
         table = Table.objects.get(pk=pk)
@@ -362,3 +363,13 @@ class OrderDetail(APIView):
         Resp = Order.objects.get(pk=pk)
         order.delete()
         return Response({"success":"Order '{}' was deleted successfully".format(Resp.table.name)})
+
+
+class CheckView(APIView):
+
+    serializer_class = serializers.CheckOrderSerializer
+
+    def get(self,request):
+        checkmeals = CheckOrder.objects.all()
+        serializer = serializers.CheckOrderSerializer(checkmeals, many=True)
+        return Response({"checks": serializer.data})

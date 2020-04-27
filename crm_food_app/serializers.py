@@ -101,19 +101,25 @@ class OrderSerializer(serializers.ModelSerializer):
         return Order.objects.create(**validated_data)
 
 
-class CheckOrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CheckOrder
-        fields = ['id', 'order', 'date', 'servicefree']
-
-    def create(self, validated_data):
-        return CheckOrder.objects.create(**validated_data)
-
-
 class CheckedMealSerializer(serializers.ModelSerializer):
+
+    meal = serializers.SlugRelatedField(slug_field="name", read_only=True)
+
     class Meta:
         model = CheckedMeal
-        fields = ['id', 'mealorder', 'check_fk', 'meal']
+        fields = '__all__'
 
     def create(self, validated_data):
         return CheckedMeal.objects.create(**validated_data)
+
+
+class CheckOrderSerializer(serializers.ModelSerializer):
+
+    check_fk = CheckedMealSerializer(many=True)
+
+    class Meta:
+        model = CheckOrder
+        fields = ['id', "order",'ordername', "date", "servicefree", "check_fk"]
+
+    def create(self, validated_data):
+        return CheckOrder.objects.create(**validated_data)
