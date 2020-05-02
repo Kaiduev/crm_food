@@ -25,3 +25,14 @@ class UserTestCase(TestCase):
 
     def test_user_into(self):
         self.assertEqual(self.user.name, 'Tomas')
+
+class StatusTestCase(TestCase):
+    # StatusTest
+
+    def setUp(self):
+        print('Setup Status Activity')
+        self.status = Status.objects.create(name='inprogress')
+
+    def test_status_into(self):
+        self.assertEqual(self.status.name, 'inprogress')
+
