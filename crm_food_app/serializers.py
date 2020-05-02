@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import *
-from user.models import Role, User
+# from user.models import Role, User
 
 
 class RoleSerializer(serializers.ModelSerializer):

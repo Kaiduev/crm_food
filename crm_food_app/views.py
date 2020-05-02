@@ -5,7 +5,7 @@ from . import serializers
 from .models import *
 from rest_framework.response import Response
 from rest_framework import generics
-from user.models import Role,User
+# from user.models import Role,User
 import django_filters.rest_framework
 
 

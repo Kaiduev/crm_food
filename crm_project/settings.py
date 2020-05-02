@@ -106,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Auth user model
 
-AUTH_USER_MODEL = 'user.User'
+# AUTH_USER_MODEL = 'user.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
