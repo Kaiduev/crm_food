@@ -56,3 +56,15 @@ class DepartmentTestCase(TestCase):
 
     def test_department_into(self):
         self.assertEqual(self.department.name, 'kitchen')
+
+
+class MealCategoryTestCase(TestCase):
+    # MealCategory Test
+
+    def setUp(self):
+        print('Setup MealCategory Activity')
+        self.department = Department.objects.create(name='kitchen')
+        self.mealcategory = MealCategory.objects.create(name='meat', department=self.department)
+
+    def test_department_into(self):
+        self.assertEqual(self.mealcategory.name, 'meat')
