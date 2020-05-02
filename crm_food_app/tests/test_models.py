@@ -26,6 +26,7 @@ class UserTestCase(TestCase):
     def test_user_into(self):
         self.assertEqual(self.user.name, 'Tomas')
 
+
 class StatusTestCase(TestCase):
     # StatusTest
 
@@ -36,3 +37,12 @@ class StatusTestCase(TestCase):
     def test_status_into(self):
         self.assertEqual(self.status.name, 'inprogress')
 
+
+class TableTestCase(TestCase):
+    # Table Test
+    def setUp(self):
+        print('Setup Table Activity')
+        self.table = Table.objects.create(name='Table№1')
+
+    def test_table_into(self):
+        self.assertEqual(self.table.name, 'Table#1')
