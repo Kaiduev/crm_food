@@ -5,6 +5,7 @@ from . import serializers
 from .models import *
 from rest_framework.response import Response
 from rest_framework import generics
+from user.models import Role,User
 import django_filters.rest_framework
 
 
@@ -373,3 +374,13 @@ class CheckView(APIView):
         checkmeals = CheckOrder.objects.all()
         serializer = serializers.CheckOrderSerializer(checkmeals, many=True)
         return Response({"checks": serializer.data})
+
+
+class CheckDetail(APIView):
+
+    serializer_class = serializers.CheckOrderSerializer
+
+    def get(self,requests, pk):
+        checkmeal = CheckOrder.objects.get(pk=pk)
+        serializer = serializers.CheckOrderSerializer(checkmeal)
+        return Response(serializer.data)

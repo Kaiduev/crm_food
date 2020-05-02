@@ -1,6 +1,8 @@
+# from django.contrib.auth.base_user import AbstractBaseUser
 # from django.db import models, IntegrityError
 # from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 # import jwt
+#
 #
 # class Role(models.Model):
 #     name = models.CharField(max_length=150)
@@ -27,7 +29,7 @@
 #
 #         return user
 #
-#     def create_superuser(self, login, email, role, password):
+#     def create_superuser(self, login, email,role, password):
 #
 #         if password is None:
 #             raise TypeError('Superuser must have a password')
@@ -39,7 +41,7 @@
 #         return user
 #
 #
-# class User(AbstractUser, PermissionsMixin):
+# class User(AbstractBaseUser, PermissionsMixin):
 #     name = models.CharField(max_length=150)
 #     surname = models.CharField(max_length=150)
 #     login = models.CharField(max_length=255, default=True, unique=True)
