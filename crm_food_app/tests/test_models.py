@@ -45,4 +45,14 @@ class TableTestCase(TestCase):
         self.table = Table.objects.create(name='Table№1')
 
     def test_table_into(self):
-        self.assertEqual(self.table.name, 'Table#1')
+        self.assertEqual(self.table.name, 'Table№1')
+
+
+class DepartmentTestCase(TestCase):
+    # Department Test
+    def setUp(self):
+        print('Setup Department Activity')
+        self.department = Department.objects.create(name='kitchen')
+
+    def test_department_into(self):
+        self.assertEqual(self.department.name, 'kitchen')
