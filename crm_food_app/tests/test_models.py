@@ -140,19 +140,19 @@ class MealOrderTestCase(TestCase):
 #     def test_mealstoorder_into(self):
 #         self.assertEqual(self.mealstoorder.pk, 1)
 
-class CheckOrder(TestCase):
-    # CheckOrder Test
-
-    def setUp(self):
-        print("Setup CheckOrder Activity")
-        self.role = Role.objects.create(name='waiter')
-        self.user = User.objects.create(name='Tomas', surname='John',
-                                        login='tom', email='tomasjohn@example.com',
-                                        role=self.role, phone=5566778899)
-        self.table = Table.objects.create(name='Table№1')
-        self.order = Order.objects.create(waiter=self.user, table=self.table,
-                                          isitopen=True)
-        self.checkorder = CheckOrder.objects.create(Order='Order1',order=self.order)
-
-    def test_checkorder_into(self):
-        self.assertEqual(self.checkorder.ordername, 'Order1')
+# class CheckOrder(TestCase):
+#     # CheckOrder Test
+#
+#     def setUp(self):
+#         print("Setup CheckOrder Activity")
+#         self.role = Role.objects.create(name='waiter')
+#         self.user = User.objects.create(name='Tomas', surname='John',
+#                                         login='tom', email='tomasjohn@example.com',
+#                                         role=self.role, phone=5566778899)
+#         self.table = Table.objects.create(name='Table№1')
+#         self.order = Order.objects.create(waiter=self.user, table=self.table,
+#                                           isitopen=True)
+#         self.checkorder = CheckOrder.objects.create(Order='Order1',order=self.order)
+#
+#     def test_checkorder_into(self):
+#         self.assertEqual(self.checkorder.ordername, 'Order1')
