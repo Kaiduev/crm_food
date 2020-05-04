@@ -68,3 +68,57 @@ class MealCategoryTestCase(TestCase):
 
     def test_department_into(self):
         self.assertEqual(self.mealcategory.name, 'meat')
+
+
+class MealTestCase(TestCase):
+    # Meal Test
+
+    def setUp(self):
+        print("Setup Meal Activity")
+        self.department = Department.objects.create(name='kitchen')
+        self.mealcategory = MealCategory.objects.create(name='meat',
+                                                        department=self.department)
+        self.meal = Meal.objects.create(name='plov',
+                                        category=self.mealcategory,
+                                        price=250, description='some text')
+
+    def test_meal_into(self):
+        self.assertEqual(self.meal.name,'plov')
+
+
+class OrderTestCase(TestCase):
+    # Order Test
+
+    def setUp(self):
+        print("Setup Order Activity")
+        self.role = Role.objects.create(name='waiter')
+        self.user = User.objects.create(name='Tomas', surname='John',
+                                        login='tom', email='tomasjohn@example.com',
+                                        role=self.role, phone=5566778899)
+        self.table = Table.objects.create(name='Table№1')
+        self.order = Order.objects.create(waiter=self.user, table=self.table,
+                                          isitopen=True)
+
+    def test_order_into(self):
+        self.assertEqual(self.order.isitopen, True)
+
+
+class MealOrderTestCase(TestCase):
+    # MealOrder Test
+
+    def setUp(self):
+        print("Setup MealOrder Activity")
+        self.role = Role.objects.create(name='waiter')
+        self.user = User.objects.create(name='Tomas', surname='John',
+                                        login='tom', email='tomasjohn@example.com',
+                                        role=self.role, phone=5566778899)
+        self.table = Table.objects.create(name='Table№1')
+        self.order = Order.objects.create(waiter=self.user, table=self.table,
+                                          isitopen=True)
+        self.department = Department.objects.create(name='kitchen')
+        self.mealcategory = MealCategory.objects.create(name='meat', department=self.department)
+        self.meal = Meal.objects.create(name='plov',category=self.mealcategory,price=250)
+        self.mealorder = MealOrder.objects.create(order=self.order, meal=self.meal,count=2)
+
+    def test_mealorder_into(self):
+        self.assertEqual(self.mealorder.count, 2)
